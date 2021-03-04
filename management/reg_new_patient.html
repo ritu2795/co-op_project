@@ -1,0 +1,273 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            font-size: 120%;
+            background: #F8F8FF;
+        }
+
+        .header {
+            width: 50%;
+            margin: 50px auto 0px;
+            color: white;
+            background: #5F9EA0;
+            text-align: center;
+            border: 1px solid #B0C4DE;
+            border-bottom: none;
+            border-radius: 10px 10px 0px 0px;
+            padding: 20px;
+        }
+
+        form,
+        .content {
+            width: 50%;
+            margin: 0px auto;
+            padding: 20px;
+            border: 1px solid #B0C4DE;
+            background: white;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .input-group {
+            margin: 10px 0px 10px 0px;
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            margin: 3px;
+        }
+
+        .input-group input {
+            height: 30px;
+            width: 93%;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
+
+        .btn {
+            padding: 10px;
+            font-size: 15px;
+            color: white;
+            background: #5F9EA0;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <br><br><br><br><br>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light " style="background-color: #e3f2fd;">
+        <img class="navbar-brand" src="/public/src/img/logo.png" style="height: auto;  ">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link"
+                        href="/workplace/management/home.html">Management Home
+                        <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="add_user">User Name</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item"
+                            href="#">Change Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="header">
+            <h2>Register Client Details</h2>
+        </div>
+
+
+        <form class="form" method="post">
+            <div class="input-group">
+                <label>First Name</label>
+                <input type="text" name="firstname" id="firstname" required>
+            </div>
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" name="lastname" id="lastname" required>
+            </div>
+            <div class="input-group">
+                <label>Address</label>
+                <input type="text" name="address" id="address" required>
+            </div>
+            <div class="input-group">
+                <label>City</label>
+                <input type="text" name="city" id="city" required>
+            </div>
+            <div class="input-group">
+                <label>Province</label>
+                <input type="text" name="province" id="province" value="Saskatchewan" readonly>
+            </div>
+            <div class="input-group">
+                <label>Country</label>
+                <input type="text" name="country" id="country" value="Canada" readonly>
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" name="phonenumber" id="phonenumber" onkeypress="return isNumberKey(event)" required>
+            </div>
+            <input class="submit btn btn-primary" name="submit" id="submit_button" value="Register">
+            
+        </form>
+
+
+    </div>
+    <script>
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }    
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+        /* $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                url: "/public/management_usr/serverside/getuser_details.php",
+                dataType: "text",
+                error: function (request, error) {
+                    console.log(arguments);
+                    alert(" Can't do because: " + error);
+                },
+                success: function (JSONObject) {
+                    var peopleHTML = "";
+                    var tempjsonval = JSON.parse(JSONObject);
+
+                    if (tempjsonval.length == 0) {
+                        window.location.href = "https://socialwork.ursse.org/public/management_usr/serverside/logout.php", true;
+
+                    }
+                    var str1 = "";
+                    str1 += tempjsonval[0].firstname;
+
+                    document.getElementById("add_user").innerHTML = str1;
+                }
+            });
+        }); */
+    </script>
+    <script>
+        //The ready() method is used to make a function available after the document is loaded. 
+        //Whatever code you write inside the $(document ).ready() method will run once the page DOM 
+        //is ready to execute JavaScript code.
+
+        $(document).ready(function () {
+            $("#submit_button").click(function () {
+                var firstname = $("#firstname").val();
+                var lastname = $("#lastname").val();
+                var address = $("#address").val();
+                var country = $("#country").val();
+                var city = $("#city").val();
+                var phonenumber = $("#phonenumber").val();
+                var province = $("#province").val();
+                if (firstname && lastname && address && country && city && phonenumber && province) {
+                    var check = window.confirm("Are you sure you want to Save");
+                    if (check) {
+                        //post method is another way to post data to the server. 
+                        //It take three parameters: the url , the data you want to post, and a callback function.
+                        $.post("/workplace/management/server/reg_new_pat_user.php",
+                            {
+                                firstname: firstname,
+                                lastname: lastname,
+                                address: address,
+                                country: country,
+                                city: city,
+                                phonenumber: phonenumber,
+                                province: province
+                            },
+                            function (data, status) {
+                                if (data == "Already Exist") {
+                                    alert("This Client phonenumber is already in the system.");
+                                }
+                                else {
+                                    
+                                    alert("Client ID for Login - " + data[0].p_id);
+                                    var url = "/workplace/management/home.html";
+                                    $(location).attr('href', url);
+                                }
+                            });
+                    }
+                }
+                else {
+                    if (!firstname) {
+                        alert("Add firstname");
+                    }
+
+                    if (!lastname) {
+                        alert("Add Last name");
+                    }
+
+                    if (!city) {
+                        alert("Add City");
+                    }
+
+                    if (!province) {
+                        alert("Add Province");
+                    }
+
+                    if (!country) {
+                        alert("Add Country");
+                    }
+
+                    if (!phonenumber) {
+                        alert("Add Phone Number");
+                    }
+                    if (!address) {
+                        alert("Add address");
+                    }
+
+                }
+
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

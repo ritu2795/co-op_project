@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            font-size: 120%;
+            background: #F8F8FF;
+        }
+
+        .header {
+            width: auto;
+            margin: 50px auto 0px;
+            color: white;
+            background: #5F9EA0;
+            text-align: center;
+            border: 1px solid #B0C4DE;
+            border-bottom: none;
+            border-radius: 10px 10px 0px 0px;
+            padding: 20px;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 16px;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container ">
+        <div class="header">
+            <h2>Client Sign Up</h2>
+        </div>
+
+        <table class="center">
+            <tr>
+                <td><label>Client Id</label></td>
+                <td><input type="text" id="p_id"></td>
+                <td><button class="btn btn-primary submit_button_p_id">Check</button></td>
+                <td>
+                    <p id="check_p_id"></p>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Username</label></td>
+                <td><input type="text" placeholder="johndoe@123" id="p_name"></td>
+                <td><button class="btn btn-primary submit_button_p_name">Check</button></td>
+                <td>
+                    <p id="check_p_name"></p>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Password</label></td>
+                <td><input type="password" id="password"></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td><label>Confirm password</label></td>
+                <td><input type="password" id="confirm_password"></td>
+                <td colspan="2"><span id="message"></span></td>
+            </tr>
+
+            <tr>
+                <td colspan="3"><label>Security Questions</label></td>
+            </tr>
+
+            <tr>
+                <td><label>What is your maiden name?</label></td>
+                <td><input type="text" name="security_question1" id="security_question1"></td>
+                <td><span class="error" id="security_question1_error"></span></td>
+            </tr>
+
+            <tr>
+                <td><button class="btn btn-primary final_submit">Register</button></td>
+                <td><input type="button" class="btn btn-primary" value="Back to login"
+                        onclick="window.location.href='/workplace/patient/index.html'"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }    
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(document).on('click', '.final_submit', function () {
+
+                    var p_id = $("#p_id").val();
+
+                    var p_name = $("#p_name").val();
+
+                    var password = $("#password").val();
+
+                    var confirm_password = $("#confirm_password").val();
+
+                    var security_question1 = $("#security_question1").val();
+
+                    // AJAX request
+                    if (p_id && p_name && password && confirm_password && security_question1) {
+                        if (password == confirm_password) {
+ 
+                            $.ajax({ 
+                                url: '/workplace/patient/serverside/update_list_patient_pid_user.php',
+                                type: 'post',
+                                data: { 
+                                    p_id: p_id,
+                                    p_name: p_name,
+                                    password: password,
+                                    confirm_password: confirm_password,
+                                    security_question1: security_question1
+                                },
+                                success: function (data) {
+                                    alert(data);
+                                    if (data == "Registered") {
+                                        window.location.href = "/workplace/patient/index.html", true;
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Password Does Not Match");
+
+                        }
+                    }
+                    else {
+                        if (!p_id) {
+                            alert("Insert Client ID");
+                        }
+                        if (!p_name) {
+                            alert("Insert Client UserName");
+                        }
+                        if (!password) {
+                            alert("Insert Client password");
+                        }
+                        if (!confirm_password) {
+                            alert("Insert Client confirm password");
+                        }
+                        if (!security_question1) {
+                            alert("Insert Client security answer");
+                        }
+                    }
+
+                });
+
+            }); //END}
+        }); 
+    </script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $(function () {
+                $(document).on('click', '.submit_button_p_name', function () {
+
+                    var p_name = $("#p_name").val();
+                    // AJAX request
+                    if (p_name) {
+                        $.ajax({
+                            url: '/workplace/patient/serverside/req_list_patient_pname_user.php',
+                            type: 'post',
+                            data: { p_name: p_name },
+
+                            success: function (data) {
+                                var str1 = data;
+                                if (data == "Not Valid- Username Already Exist") {
+                                    str1 = "<i style=\"color:red\" class=\"fa fa-times\"></i>";
+                                }
+                                else if (data == "Valid Username") {
+                                    str1 = "<i style=\"color:green\" class=\"fa fa-check-circle\"></i>";
+                                }
+                                document.getElementById("check_p_name").innerHTML = str1;
+                            }
+                        });
+                    }
+                    else {
+                        if (!p_name) {
+                            alert("Insert Staff Username");
+                        }
+                    }
+
+                });
+
+            }); //END}
+        }); 
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(document).on('click', '.submit_button_p_id', function () {
+
+                    var p_id = $("#p_id").val();
+                    // AJAX request
+                    if (p_id) {
+                        $.ajax({
+                            url: '/workplace/patient/serverside/req_list_patient_pid_user.php',
+                            type: 'post',
+                            data: { p_id: p_id },
+
+                            success: function (data) {
+                                var str1 = data;
+
+                                if (data == "Account Already exist" || data == "Not Valid") {
+                                    str1 = "<i style=\"color:red\" class=\"fa fa-times\"></i>";
+                                }
+                                else if (data == "Valid ID") {
+                                    str1 = "<i style=\"color:green\" class=\"fa fa-check-circle\"></i>";
+                                }
+                                document.getElementById("check_p_id").innerHTML = str1;
+                            }
+                        });
+                    }
+                    else {
+                        if (!p_id) {
+                            alert("Insert Client ID");
+                        }
+                    }
+
+                });
+
+            }); //END}
+        }); 
+    </script>
+
+    <script>
+        $('#password, #confirm_password').on('keyup', function () {
+            if ($('#password').val() == $('#confirm_password').val()) {
+
+                if ($('#password').val() != "" && $('#confirm_password').val() != "") {
+                    $('#message').html('Matching').css('color', 'green');
+                }
+                else {
+                    $('#message').html('').css('color', 'green');
+                }
+            } else
+                $('#message').html('Not Matching').css('color', 'red');
+        });
+    </script>
+
+
+</body>
+
+</html>

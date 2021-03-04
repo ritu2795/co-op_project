@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Story of Métis People</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        #backgroundimg {
+            height: 100vh;
+            width: 100%;
+            background-color: lightblue;
+            background-repeat: no-repeat;
+            background-position: center 56px;
+        }
+
+        ol.breadcrumb li+li:before {
+            padding: 8px;
+            color: white;
+            content: "/\00a0";
+        }
+
+        .breadcrumb {
+            background: black;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            body {
+                background-image: url(/public/src/img/Akohp.jpg);
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="addnavigation">
+    </header>
+    <br>
+    <div id=backgroundimg>
+        <br><br><br>
+
+        <main>
+            <br>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="/workplace/patient/home_page.html" style="color: white;">Home</a></li>
+                    <li><a href="/workplace/patient/culture_and_identity.html"
+                            style="color: white;">Demo</a></li>
+                    <li style="color: white;">Dummy text</li>
+
+                </ol>
+            </nav><br><br>
+            <h1 class="text-center" style="color: ghostwhite;"><b>Dummy text</b></h1>
+            <div id="add_buttons"></div>
+
+        </main>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+        <script src="/workplace/patient/javascript/handle_main_navigation.js"></script>
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/workplace/patient/serverside/week1/send_content.php",
+                    dataType: "text",
+                    error: function (request, error) {
+                        console.log(arguments);
+                        alert(" Can't do because: " + error);
+                    },
+                    success: function (JSONObject) {
+                        var peopleHTML = "";
+                        var tempjsonval = JSON.parse(JSONObject);
+                        //console.log(tempjsonval[1][2]);
+                        var str = "";
+
+                        str += "<section class=\"row\">\n" +
+                            "            <div class=\"col-md-12 col-lg-12 \">\n" +
+                            "                <br><br>\n" +
+                            "                <div class=\"row\">\n" +
+                            "                    <ul class=\"col-md-8 col-lg-8 offset-md-2 offset-lg-2 center-align list-unstyled\">\n";
+
+
+                        if (true) {
+                            if (tempjsonval[0][0].flag_inserted_once == "1" && tempjsonval[0][1].flag_inserted_once == "1" &&
+                                tempjsonval[0][2].flag_inserted_once == "1" && tempjsonval[1][0].check_complete == "1" &&
+                                tempjsonval[1][1].check_complete == "1" && tempjsonval[1][2].check_complete == "1") {
+                                str += "<li style=\"text-align: center;\"> <mark style=\"background-color:pink; " +
+                                    "font-size: 20px; padding-left:10px; padding-right:10px; margin:7px\">" +
+                                    "<b>Day 1:</b> Day: 1</mark>" +
+                                    " <a href=\"/workplace/patient/what_does_it_mean_to_be_metis.html\" class=\"btn text-white btn-info\" style=\"font-size: 18px; background-color:green; border-radius: 8px;\">" +
+                                    "Learn  <i class=\"fa fa-unlock\"></i> </a> <i class=\"fa fa-check fa-lg\" style=\"color:ghostwhite;\"></i></li>   </a><br>\n";
+                            }
+                            else {
+                                str += "<li style=\"text-align: center;\"> <mark style=\"background-color:pink; " +
+                                    "font-size: 20px; padding-left:10px; padding-right:10px; margin:7px\">" +
+                                    "<b>Day 1:</b> Day: 1</mark>" +
+                                    " <a href=\"/workplace/patient/what_does_it_mean_to_be_metis.html\" class=\"btn text-white btn-info\" style=\"font-size: 18px; background-color:green; border-radius: 8px;\">" +
+                                    "Learn  <i class=\"fa fa-unlock\"></i> </a> </li><br>\n";
+
+                            }
+
+                        }
+
+                        str += "                        <br>\n" +
+                            "                    </ul>\n" +
+                            "                </div>\n" +
+                            "            </div>\n" +
+                            "        </section>";
+
+                        document.getElementById("add_buttons").innerHTML = str;
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

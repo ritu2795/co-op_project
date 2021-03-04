@@ -1,0 +1,135 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+</head>
+
+<body>
+
+
+    <br><br><br><br><br>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light " style="background-color: #e3f2fd;">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/workplace/staff/home.html">Staff Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/workplace/staff/index.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+
+
+        <h4 class="text-center"><u>Review Question and Answers of Clients</u></h4><br>
+        <main class="myMain">
+            <div id="dropdown_patientid" class="text-center">
+            </div>
+            <div id="content">
+
+            </div>
+            <br />
+        </main>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/workplace/staff/server/fetch_pname.php",
+                    dataType: "text",
+                    error: function (request, error) {
+                        console.log(arguments);
+                        alert(" Can't do because: " + error);
+                    },
+                    success: function (JSONObject) {
+                        var peopleHTML = "";
+                        var tempjsonval = JSON.parse(JSONObject);
+                        var str = "";
+                        console.log(tempjsonval);
+                        count = tempjsonval.length;
+                        str += "<select id=\"s_p_id\" name=\"s_p_id\" >"
+                        str+="<option value=\"\"> Select Client</option>";
+                        for (i = 0; i < count; i++) {
+                            str += "<option value=\"" +
+                                tempjsonval[i].p_id +
+                                "\">" + tempjsonval[i].firstname + "</option>";
+                        }
+                        str += "<br></select><button class=\"patient_id\" style=\"margin:10px\">Display Answers</button>"
+
+                        document.getElementById("dropdown_patientid").innerHTML = str;
+
+                        //Start: For WEEK 1
+                        $(function () {
+                            $(document).on('click', '.patient_id', function () {
+                                var element = $(this);
+                                $.ajax({
+                                    url: '/workplace/staff/server/fetch_answers.php',
+                                    type: 'post',
+                                    data: { p_id: $('#s_p_id option:selected').val() },
+                                    success: function (data) {
+
+                                        var patient_log = data;
+                                        //start here
+                                        //console.log(patient_log);
+                                        var str = "";
+                                        var count_staff = patient_log.length;
+                                        str += "<h5 class=\"text-center\"><b><u>Week 1</u></b></h5>"
+                                        for (i = 0; i < count_staff; i++) {
+
+                                           
+                                            if (String(patient_log[i].type_of_log) == "1") {
+
+                                                str += "<div class=\"card-body\">" +
+                                                    "<p class=\"card-text\"><b>" +
+                                                    patient_log[i].con + "</b>" +
+                                                    "<hr class=\"style1\"></hr><p class=\"card-text\">" +
+                                                    "<div class= 'w3-section'>" +
+                                                    "<p style=\"margin-bottom:0rem; font-size:20px\">" +
+                                                    patient_log[i].body + "</p>" +
+                                                  
+                                                    "</p></p></div></div>";
+                                            }
+                                            
+                                            else if (patient_log[i].type_of_log == "3") {
+                                                str += "<div class=\"card-body\"><p class=\"card-text\">" +
+                                                    "<p class=\"card-text\"><b>" +
+                                                    patient_log[i].con + "</b>" +
+                                                    "<hr class=\"style1\"></hr><p class=\"card-text\">" +
+                                                    "<div class= 'w3-section'>" +
+                                                    "<p>No content added</p>" +
+                                                    "</p></p></div></div>";
+                                            }
+                                        }
+                                        str += "</div>";
+
+
+                                        document.getElementById("content").innerHTML = str;
+                                    }
+                                });
+                            });
+                        }); //END
+                    }
+                });
+            });
+        </script>
+    </body>
+
+</html>

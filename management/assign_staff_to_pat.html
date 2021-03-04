@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tutorial</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br><br><br><br>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light " style="background-color: #e3f2fd;">
+        <img class="navbar-brand" src="/public/src/img/logo.png" style="height: auto;  ">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link"
+                        href="/workplace/management/homepage_management.html">Management Home
+                        <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="add_user">User Name</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item"
+                            href="#">Change Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <main>
+        <section>
+
+            <br>
+            <div style="text-align: center; ">
+                <h1> Assign Staff to the Client</h1></br>
+                <div style="padding-right: 20%; display: inline-block;">
+                    <div style="height:200px;  overflow:scroll; ">
+                        <table id="staff"> 
+
+                        </table>
+                    </div>
+                </div>
+                <div style="display: inline-block;">
+                    <div style="height:200px; width: auto; overflow:scroll; ">
+                        <table id="patient">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button id="submit_button">Assign</button>
+             
+            </div>
+            <hr>
+            <div style="border: black; text-align: center;">
+                <h1> Assigned Staff to the Client</h1>
+                <div style="height:200px; width: auto; display: inline-block; overflow:scroll; ">
+                    <table id="assign">
+                    </table>
+                </div>
+
+            </div>
+            <div style="text-align: center;">
+                <button id="delete_button">Delete</button>
+            </div>
+        </section>
+    </main>
+</body>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $("#submit_button").click(function () {
+            var radioValue1 = $("input[name='staff']:checked").val();
+            var radioValue2 = $("input[name='patient']:checked").val();
+
+            if (radioValue1 && radioValue2) {
+                //get the id
+                radioValue1 = radioValue1.split("f").pop();
+                radioValue2 = radioValue2.split("t").pop();
+                var check = window.confirm("Are you sure you want to Assign \n Staff ID   -   " + radioValue1 + "\n to \n patient ID -   " + radioValue2);
+                if (check) {
+                    $.post("/workplace/management/server/assignstaff.php",
+                        {
+                            value1: radioValue1,
+                            value2: radioValue2
+                        },
+                        function (data, status) {
+                            if (data == "done") {
+                                alert("Staff Assigned to client successfully");
+                                location.reload();
+                            }
+                            else {
+                                alert("Staff Id = " + radioValue1 + " \n was Already Assigned to \n Cleint Id =" + radioValue2);
+                            }
+
+                        });
+                }
+            } else {
+                if (!radioValue1) {
+                    alert("Select Staff Member");
+                }
+
+                if (!radioValue2) {
+                    alert("Select Client");
+                }
+            }
+
+        });
+
+
+        //delete the assigned staff to patient
+        $("#delete_button").click(function () {
+            var radioValue1 = $("input[name='assign']:checked").val();
+            if (radioValue1) {
+                radioValue1 = radioValue1.split("n").pop();
+                var check = window.confirm("Are you sure you want to Delete the relationship?");
+                if (check) {
+                    $.post("/workplace/management/server/deleteassign.php",
+                        {
+                            value1: radioValue1
+                        },
+                        function (data, status) {
+                            if (data == "done") {
+                                alert("Staff - Cleint Relationship Deleted");
+                                location.reload();
+                            }
+
+                        });
+                }
+            } else {
+                if (!radioValue1) {
+                    alert("Select The relationship to Delete");
+                }
+
+            }
+
+        });
+        $.ajax({
+            type: "POST",
+            url: "/workplace/management/server/selectstaffandpat.php",
+            dataType: "text",
+            error: function (request, error) {
+                console.log(arguments);
+                alert(" Can't do because: " + error);
+            },
+            success: function (JSONObject) {
+                var tempjsonval = JSON.parse(JSONObject); 
+
+                //staff
+                var str1 = "<tr><th colspan=\"4\">Staff</th></tr><tr><th>Select</th><th>ID</th><th>FirstName</th><th>LastName</th></tr>";
+                var count_staff = tempjsonval.staff.length;
+                var count_patient = tempjsonval.patient.length;
+                var count_assign = tempjsonval.assign.length;
+                for (i = 0; i < count_staff; i++) {
+                    str1 += "<tr><td><input type=\"radio\" name=\"staff\" value=\"staff" +
+                        tempjsonval.staff[i].s_id +
+                        "\" ></input></td><td>" +
+                        tempjsonval.staff[i].s_id +
+                        "</td><td>" +
+                        tempjsonval.staff[i].firstname +
+                        "</td><td>" +
+                        tempjsonval.staff[i].lastname +
+                        "</td></tr>"
+
+                }
+                document.getElementById("staff").innerHTML = str1;
+
+                //patient
+                str1 = "";
+                str1 = " <tr><th colspan=\"4\">Client</th></tr><tr><th>Select</th><th>ID</th><th>FirstName</th><th>LastName</th></tr>";
+                for (i = 0; i < count_patient; i++) {
+                    str1 += "<tr><td><input type=\"radio\" name=\"patient\" value=\"patient" +
+                        tempjsonval.patient[i].p_id +
+                        "\" ></input></td><td>" +
+                        tempjsonval.patient[i].p_id +
+                        "</td><td>" +
+                        tempjsonval.patient[i].firstname +
+                        "</td><td>" +
+                        tempjsonval.patient[i].lastname +
+                        "</td></tr>"
+                }
+                document.getElementById("patient").innerHTML = str1;
+
+                //assign
+                str1 = "";
+                str1 = " <tr><th colspan=\"7\">Assigned Client to Staff</th></tr>" +
+                    "<tr><th rowspan=\"2\">Select</th><th colspan=\"3\">Staff</th><th colspan=\"3\">Client</th></tr>" +
+                    "<tr><th>ID</th><th>FirstName</th><th>LastName</th><th>ID</th><th>FirstName</th><th>LastName</th></tr>";
+                console.log(tempjsonval.assign);
+
+                for (i = 0; i < count_assign; i++) {
+
+                    str1 += "<tr><td><input type=\"radio\" name=\"assign\" value=\"assign" +
+                        tempjsonval.assign[i].a_id +
+                        "\" ></input></td><td>" +
+                        tempjsonval.assign[i].s_id +
+                        "</td><td>" +
+                        tempjsonval.assign[i].s_f +
+                        "</td><td>" +
+                        tempjsonval.assign[i].s_l +
+                        "</td><td>" +
+                        tempjsonval.assign[i].p_id +
+                        "</td><td>" +
+                        tempjsonval.assign[i].p_f +
+                        "</td><td>" +
+                        tempjsonval.assign[i].p_l +
+                        "</td></tr>"
+                }
+                document.getElementById("assign").innerHTML = str1;
+            }
+        });
+    });
+
+</script>
+<script>
+    /* $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/public/management_usr/serverside/getuser_details.php",
+            dataType: "text",
+            error: function (request, error) {
+                console.log(arguments);
+                alert(" Can't do because: " + error);
+            },
+            success: function (JSONObject) {
+                var peopleHTML = "";
+                var tempjsonval = JSON.parse(JSONObject);
+                console.log(tempjsonval);
+
+                if (tempjsonval.length == 0) {
+                    window.location.href = "https://socialwork.ursse.org/public/management_usr/serverside/logout.php", true;
+
+                }
+                var str1 = "";
+                str1 += tempjsonval[0].firstname;
+
+
+                document.getElementById("add_user").innerHTML = str1;
+
+            }
+
+        });
+
+    }); */
+</script>
+
+</body>
+
+</html>

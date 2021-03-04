@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Culture and Identity</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css";
+
+
+        #backgroundimg {
+            height: 100vh;
+            width: 100%;
+            background-color: lightblue;
+            background-repeat: no-repeat;
+            background-position: center 56px; 
+        }
+
+        .breadcrumb {
+            background: black;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        ol.breadcrumb li+li:before {
+            padding: 8px;
+            color: white    ;
+            content: "/\00a0";
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            body {
+                background-image: url(/public/src/img/Lighting_the_pipe.jpg);
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="addnavigation">
+    </header>
+    <br>
+    <div id=backgroundimg>
+    <br><br><br>
+    <main>
+        <br>
+        <nav aria-label="breadcrumb" class="home">
+            <ol class="breadcrumb">
+                <li><a
+                        href="/workplace/patient/home.html" style="color: white;">Home</a></li>
+                <li style="color: white;">Demo</li>
+
+
+            </ol>
+        </nav><br>
+        <div class="container" id="add_progress_bar" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar bg-success progress-bar-striped" role="progressbar" id="progressbar1"
+                    aria-valuenow="40" aria-valuemin="0" aria-valuemax="50" style="width:40%">
+                    40% Completed
+                </div>
+            </div>
+        </div><br>
+        <h1 class="text-center" style="color: white;"> <b>Demo</b></h1>
+        <div id="add_buttons"></div>
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="/workplace/patient/javascript/handle_main_navigation.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "POST", 
+                url: "/workplace/patient/serverside/send_totalcompleted.php",
+                dataType: "text",
+                error: function (request, error) {
+                    console.log(arguments);
+                    alert(" Can't do because: " + error);
+                },
+                success: function (JSONObject) {
+                    var peopleHTML = "";
+                    var tempjsonval = JSON.parse(JSONObject);
+                    var str = "";
+                    console.log(tempjsonval);
+
+
+                    str += "<section class=\"row\">\n" +
+                        "            <div class=\"col-md-8 col-lg-8 offset-md-2 offset-lg-2\">\n" +
+                        "                <br><br>\n" +
+                        "                <div class=\"row\">\n" +
+                        "                    <ul class=\"col-md-6 col-lg-6 offset-md-3 offset-lg-3 center-align list-unstyled\">\n";
+
+
+                    if (true) {
+                        str += "<li><a href=\"/workplace/patient/story_of_metis_people.html\" class=\"btn-lg btn-info btn-lg btn-block text-center\">\n" +
+                            "<b>Week 1: </b> Test  <i class=\"fa fa-unlock\"></i></a>\n" +
+                            "</li><br>\n";
+                    }
+
+                    if (tempjsonval[3][0].flag_inserted_once == "1" && tempjsonval[3][1].flag_inserted_once == "1" &&
+                        tempjsonval[3][2].flag_inserted_once == "1" &&
+                        tempjsonval[2][0].check_complete == "1" &&
+                        tempjsonval[2][1].check_complete == "1" && 
+                        tempjsonval[2][2].check_complete == "1") {
+
+                        str +=
+                            "                        <li><a href=\"/workplace/patient/storytelling.html\" class=\"btn-info btn-block btn-lg text-center\"> <b>Week 2:</b> Test1\n" +
+                            "<i class=\"fa fa-unlock\"></i> </a>\n" +
+                            "                        </li><br>\n";
+
+                    }
+                    else {
+
+                        str +=
+                            "                        <li><a href=\"#\" class=\" btn-info text-secondary disabled btn-block btn-lg text-center\"> <b>Week 2:</b> Test1  <i class=\"fa fa-lock\"></i></a></li><br>\n";
+                    }
+
+
+                    str += "                        <br>\n" +
+                        "                    </ul>\n" +
+                        "                </div>\n" +
+                        "            </div>\n" +
+                        "        </section>";
+
+                    document.getElementById("add_buttons").innerHTML = str;
+                   
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+
+</html>
